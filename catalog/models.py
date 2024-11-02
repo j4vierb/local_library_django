@@ -69,6 +69,9 @@ class Language(models.Model):
   def get_absolute_url(self):
     """Returns the url to access a detail record for this language."""
     return reverse('language-detail', args=[str(self.id)])
+  
+  class Meta:
+    db_table = "language"
 
 class Book(models.Model):
   """Model representing a book (but not a specific copy of a book)."""
@@ -99,12 +102,12 @@ class Book(models.Model):
   )
 
   genre = models.ManyToManyField(
-    Genre,
+    'Genre',
     help_text='Select a genre for this book'
   )
 
   language = models.ForeignKey(
-    Language,
+    'Language',
     on_delete=models.SET_NULL,
     null=True
   )
@@ -116,6 +119,15 @@ class Book(models.Model):
   def get_absolute_url(self):
     """Returns the url to access a detail record for this book."""
     return reverse('book-detail', args=[str(self.id)])
+  
+  def display_genre(self):
+    """Create a string for the Genre. This is required to display genre in Admin."""
+    return ', '.join([genre.name for genre in self.genre.all()[:3]])
+
+  display_genre.short_description = 'Genre'
+
+  class Meta:
+    db_table = "book"
 
 class BookCopy(models.Model):
   """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
@@ -126,7 +138,7 @@ class BookCopy(models.Model):
   )
 
   book = models.ForeignKey(
-    Book,
+    'Book',
     on_delete=models.RESTRICT,
     null=True
   )
@@ -149,12 +161,13 @@ class BookCopy(models.Model):
     help_text='Book availability',
   )
 
-  class Meta:
-    ordering = ['due_back']
-
   def __str__(self):
     """String for representing the Model object."""
     return f'{self.id} ({self.book.title})'
+  
+  class Meta:
+    ordering = ['due_back']
+    db_table = "book_copy"
 
 class Author(models.Model):
   """Model representing an author."""
@@ -178,3 +191,7 @@ class Author(models.Model):
   def __str__(self):
     """String for representing the Model object."""
     return f'{self.last_name}, {self.first_name}'
+  
+  class Meta:
+    db_table = "author"
+
