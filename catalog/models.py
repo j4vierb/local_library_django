@@ -73,6 +73,9 @@ class Language(models.Model):
   class Meta:
     db_table = "language"
 
+"""
+note: Django has a function to "reverse lookup". The foreign key is in BookCopy, so you can use bookcopy_set() to get all the records there.
+"""
 class Book(models.Model):
   """Model representing a book (but not a specific copy of a book)."""
   id = models.AutoField(
