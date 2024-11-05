@@ -57,7 +57,11 @@ ROOT_URLCONF = 'local_library.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'local_library/templates')], # search templates in this folder
+        'DIRS': [
+          os.path.join(BASE_DIR, 'local_library/templates'),
+          os.path.join(BASE_DIR, 'catalog/templates/author/'),
+          os.path.join(BASE_DIR, 'catalog/templates/book/'),
+        ], # search templates in this folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
