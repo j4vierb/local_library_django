@@ -108,7 +108,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from catalog.forms import RenewBookForm
+from catalog.forms import RenewBookForm, RenewBookModelForm
 from datetime import date, timedelta
 
 @login_required
@@ -127,7 +127,8 @@ def renew_book_librarian(request, pk):
       return HttpResponseRedirect(reverse('all-borrowed'))
   else:
     proposed_renewal_date = date.today() + timedelta(weeks=3)
-    form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
+    # form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
+    form = RenewBookModelForm(initial={'due_back': proposed_renewal_date})
 
   context = {
     'form': form,
@@ -185,7 +186,7 @@ class BookUpdate(PermissionRequiredMixin, UpdateView):
 
 class BookDelete(PermissionRequiredMixin, DeleteView):
   model = Book
-  success_url = reverse_lazy('books')
+  success_url = reverse_lazy('authors')
   permission_required = 'catalog.delete_book'
   template_name = 'book_confirm_delete.html'
   context_object_name = 'book'

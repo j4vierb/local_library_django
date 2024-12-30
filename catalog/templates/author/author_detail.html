@@ -34,7 +34,7 @@
   </div>
 {% endblock %}
 
-<!-- overrides sidebar and pulls the following code in the original content using {{ block.super }} -->
+<!-- {{ block.super }} adds the code of the template -->
 {% block sidebar %} 
   {{ block.super }}
   {% if perms.catalog.change_author or perms.catalog.delete_author %}
